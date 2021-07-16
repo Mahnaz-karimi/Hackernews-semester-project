@@ -1,0 +1,76 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "bento/ubuntu-16.04"
+  #config.vm.synced_folder "~/", "/host_home", type: "virtualbox"
+  backend = ENV['BACKEND'] || "../../Backend"
+  frontend = ENV['FRONTEND'] || "../../Frontend"
+  database = ENV['DATABASE'] || "../../Database"
+  helgeapi = ENV['HELGE-API'] || "../../Helge-api"
+  rabbitmq = ENV['RABBITMQ'] || "../../Rabbitmq"
+  monitoring = ENV['MONITORING'] || "../../monitoring"
+  logging = ENV['LOGGING'] || "../../logging"
+  
+  config.vm.synced_folder "../../Backend", "/app/backend"
+  config.vm.synced_folder "../", "/app"
+  config.vm.synced_folder "../../Frontend", "/app/frontend"
+  config.vm.synced_folder "../../Database", "/app/database"
+  config.vm.synced_folder "../../Helge-api", "/app/helge-api"
+  config.vm.synced_folder "../../Rabbitmq", "/app/rabbitmq"
+  config.vm.synced_folder "../../Logging", "/app/logging"
+  config.vm.synced_folder "../../monitoring", "/app/monitoring"
+
+
+  # For the webserver
+  config.vm.network "forwarded_port", guest: 3000, host: 9000
+
+   # For the ELK
+  config.vm.network "forwarded_port", guest: 5601, host: 5601
+
+  # for mongoDB server
+  # config.vm.network "forwarded_port", guest: 27017, host: 5000
+
+  # Deployment
+  # path/to/DigitalOcean
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "HackerNews2018"
+    vb.memory = "1024"
+    vb.cpus = "2"
+  end
+
+  config.vm.provision "shell", privileged: false, inline: <<-SHELL
+      sudo apt-get update
+
+      sudo echo "LC_ALL=\"en_US.UTF-8\"" >> /etc/environment
+      sudo locale-gen UTF-8
+
+      sudo apt-get install -y git
+      sudo apt-get install -y wget
+
+      # Docker
+      sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+      sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+      sudo apt-get update
+      sudo apt-get install -y docker-ce
+      sudo usermod -aG docker ${USER}
+      su - ${USER}
+      sudo curl -L "https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+      sudo chmod +x /usr/local/bin/docker-compose
+      curl https://getmic.ro | sudo bash
+      sudo mv ./micro /usr/local/bin
+
+
+      echo "==================================================================="
+      echo "=                             DONE                                ="
+      echo "==================================================================="
+      echo "VAGRANT IS READY - FEEL FREE TO VAGRANT SSH "
+      echo " FOLLOW THESE STEPS TO GET THIS RUNNING :"
+      echo " CD TO APP DIRECTORY "
+      echo " docker-compose build "
+      echo " docker-compose up "
+      echo " PROFIT "
+    SHELL
+end
