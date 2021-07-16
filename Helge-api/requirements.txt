@@ -1,0 +1,5 @@
+Flask==0.12.3
+pymongo
+pika
+requests
+prometheus_client
