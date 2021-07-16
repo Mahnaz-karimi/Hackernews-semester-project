@@ -1,0 +1,58 @@
+
+
+{{#each stories}}
+  <tr>
+    <td bgcolor=#fafaf0 valign="top">
+      <span>{{inc @index}}</span>
+      <div class="arrow-up"></div>
+      <a href='/item/{{id}}'><b>{{title}}</b></a>
+      {{#if_not url ""}}
+        <a href={{url}}>({{url}})</a>
+      {{/if_not}}
+    </td>
+  </tr>
+  <tr>
+    <td bgcolor=#fafaf0>
+      <span>{{score}} point by {{by}}</span>
+      <span class="timeago" title="{{time}}">{{time}}</span>
+      <span>| hide | past | web |
+        <a href="/item/{{id}}"> discuss </a>
+      </span>
+      <br><br>
+    </td>
+  </tr>
+{{/each}}
+
+<tr>
+  <td bgcolor=#fafaf0>
+    <a href="/newest/{{max}}" class="btn btn-info"> More </a>
+  </td>
+</tr>
+
+
+<script>
+window.scrollTo(0, document.body.scrollHeight);
+</script>
+
+
+<!--
+<tr class='athing' id='18161882'>
+  <td align="right" valign="top" class="title"><span class="rank">1.</span></td>
+  <td valign="top" class="votelinks">
+    <center>
+      <a id='up_18161882' onclick='return vote(event, this, "up")' href='vote?id=18161882&amp;how=up&amp;auth=aa8c763c69cb434d375839ef54eba0b59b7e9036&amp;goto=newest'>
+        <div class='votearrow' title='upvote'></div>
+      </a>
+    </center>
+  </td>
+  <td class="title"><a href="https://www.cnet.com/news/your-kids-hate-your-smartphone-addiction/" class="storylink" rel="nofollow">Your kids hate your smartphone addiction</a><span class="sitebit comhead"> (<a href="from?site=cnet.com"><span class="sitestr">cnet.com</span></a>)</span>
+  </td>
+</tr>
+
+<tr>
+  <td colspan="2"></td>
+  <td class="subtext">
+    <span class="score" id="score_18161882">1 point</span> by <a href="user?id=Deinos" class="hnuser">Deinos</a> <span class="age"><a href="item?id=18161882">0 minutes ago</a></span> <span id="unv_18161882"></span> | <a href="hide?id=18161882&amp;goto=newest&amp;auth=aa8c763c69cb434d375839ef54eba0b59b7e9036"
+      onclick="return hidestory(event, this, 18161882)">hide</a> | <a href="https://hn.algolia.com/?query=Your%20kids%20hate%20your%20smartphone%20addiction&sort=byDate&dateRange=all&type=story&storyText=false&prefix&page=0" class="hnpast">past</a> |
+    <a href="https://www.google.com/search?q=Your%20kids%20hate%20your%20smartphone%20addiction">web</a> | <a href="item?id=18161882">discuss</a> </td>
+</tr> -->

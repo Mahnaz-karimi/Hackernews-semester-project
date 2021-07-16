@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="shortcut icon" href="favicon.ico">
+  <title>Hacker News</title>
+</head>
+
+<style>
+  a {
+    color: inherit;
+  }
+
+  .arrow-up {
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 8px solid #808080;
+    display: inline-block;
+  }
+
+  .arrow-down {
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 20px solid #808080;
+    display: inline-block;
+  }
+
+  .faded-font{
+    color: #808080;
+  }
+
+</style>
+
+<body>
+  <center class="well-lg">
+    <table id="hnmain" border="0" cellpadding="0" cellspacing="0" width="85%" bgcolor="#f6f6ef">
+      <tr>
+        <td bgcolor="#ff6600">
+          <table border="0" cellpadding="0" cellspacing="0" width="100%" style="padding:2px">
+            <tr>
+              <td style="width:18px;padding-right:4px">
+                <a href="/">
+                  <img src="images/favicon.ico" width="18" height="20" style="border:1px white solid;">
+                </a>
+              </td>
+              <td style="line-height:12pt; height:10px;">
+                <span class="pagetop">
+                  <b class="hnname">
+                    <a href="/">Hacker News</a>
+                  </b>
+                  <!-- this represents the navbar -->
+                  <a href="/newest">new</a> |
+                  <a href="/newcomments">comments</a> |
+                  <a href="/show">show</a> |
+                  <a href="/ask">ask</a> |
+                  <a href="/jobs">jobs</a> |
+                  <a href="/submit">submit</a>
+                </span>
+              </td>
+              {{#if isAuthenticated}}
+                <td style="text-align:right;padding-right:4px;">
+                  <span class="pagetop">
+                    <a href="/logout">logout</a>
+                  </span>
+                </td>
+              {{else}}
+                <td style="text-align:right;padding-right:4px;">
+                  <span class="pagetop">
+                    <a href="/login">login</a>
+                  </span>
+                </td>
+              {{/if}}
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr style="height: 10px"></tr>
+      <tr>
+        {{{body}}}
+      </tr>
+    </table>
+  </center>
+</body>
+
+</html>
+
+<script>
+  (function timeAgo(selector) {
+
+    var templates = {
+      prefix: "",
+      suffix: " ago",
+      seconds: "less than a minute",
+      minute: "about a minute",
+      minutes: "%d minutes",
+      hour: "about an hour",
+      hours: "about %d hours",
+      day: "a day",
+      days: "%d days",
+      month: "about a month",
+      months: "%d months",
+      year: "about a year",
+      years: "%d years"
+    };
+    var template = function(t, n) {
+      return templates[t] && templates[t].replace(/%d/i, Math.abs(Math.round(n)));
+    };
+
+    var timer = function(time) {
+      if (!time)
+        return;
+      time = time.replace(/\.\d+/, ""); // remove milliseconds
+      time = time.replace(/-/, "/").replace(/-/, "/");
+      time = time.replace(/T/, " ").replace(/Z/, " UTC");
+      time = time.replace(/([\+\-]\d\d)\:?(\d\d)/, " $1$2"); // -04:00 -> -0400
+      time = new Date(time * 1000 || time);
+
+      var now = new Date();
+      var seconds = ((now.getTime() - time) * .001) >> 0;
+      var minutes = seconds / 60;
+      var hours = minutes / 60;
+      var days = hours / 24;
+      var years = days / 365;
+
+      return templates.prefix + (
+        seconds < 45 && template('seconds', seconds) ||
+        seconds < 90 && template('minute', 1) ||
+        minutes < 45 && template('minutes', minutes) ||
+        minutes < 90 && template('hour', 1) ||
+        hours < 24 && template('hours', hours) ||
+        hours < 42 && template('day', 1) ||
+        days < 30 && template('days', days) ||
+        days < 45 && template('month', 1) ||
+        days < 365 && template('months', days / 30) ||
+        years < 1.5 && template('year', 1) ||
+        template('years', years)
+      ) + templates.suffix;
+    };
+
+    var elements = document.getElementsByClassName('timeago');
+    for (var i in elements) {
+      var $this = elements[i];
+      if (typeof $this === 'object') {
+        $this.innerHTML = timer($this.getAttribute('title') || $this.getAttribute('datetime'));
+      }
+    }
+    // update time every minute
+    setTimeout(timeAgo, 60000);
+
+  })();
+</script>
