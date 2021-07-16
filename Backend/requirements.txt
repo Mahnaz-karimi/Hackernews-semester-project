@@ -1,0 +1,9 @@
+Flask==0.12.3
+pymongo
+bcrypt
+pytest
+flask_httpauth
+pika
+requests
+prometheus_client
+python-logstash-async
