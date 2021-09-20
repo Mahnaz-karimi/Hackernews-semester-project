@@ -1,4 +1,4 @@
-This project is an example of this website: https://news.ycombinator.com/news
+This project is an example of this website: https://news.ycombinator.com
 
 ## Hackernews Backend:
 
