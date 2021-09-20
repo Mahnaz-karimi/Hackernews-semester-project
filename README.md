@@ -1,3 +1,5 @@
+This project is an example of this website: https://news.ycombinator.com/news
+
 ## Hackernews Backend:
 
 > Built in [Python](https://www.python.org/) programming language with [Flask](http://flask.pocoo.org/) framework.
